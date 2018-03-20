@@ -1,15 +1,54 @@
 <!doctype html>
-<html>
+<html class="no-js">
 <head>
 <meta charset="UTF-8">
+	<script src = "modernizr-custom.js"></script>
+	<script src = "prefixfree.js"></script>
+	<style>
+
+p    {hyphens: auto;}
+		
+.no-progressbar,meter .box { color: red; }
+.progressbar,meter .box { color: green; }
+
+@media only screen and (orientation: portrait){
+	body {
+    	background-color: lightgrey;
+	}
+}
+
+@media only screen and (orientation: landscape) {
+    body {
+        background-color: lightsteelblue;
+    }
+}
+		
+</style>
+	
 <title>index.html</title>
-</head>
+</head>x
 
 <body>
 	<h3> Mobile Compatible Web Programming </h3>
-	<h3> Assignment 1</h3>
+	<h3> Assignment 2</h3>
 <form action="formAction" method="post">
 	
+	<p>This is the form created for Assignment 2 of Mobile Compatible Web Programming. This is to test the hyphenation using prefix free. I hope this works well.</p>
+	
+	<p>As designers attempting to creating functional work, oftentimes we are required to make our designs look as finished as possible.
+
+For example, if you are designing a brand new website for someone, most times you will have to make sure the prototype looks finished by inserting text or photos or what have you. The purpose of this is so the person viewing the prototype has a chance to actually feel and understand the idea behind what you have created.
+
+Now in some circumstances, designers may use squares and rectangles to help you visualize what should and could be in a specific location.
+
+We all have our own techniques, but one of the most effective techniques is to actually put some text where text goes and some pictures where pictures go to make sure everyone can see the vision you’ve created.
+
+Coming up with filler text on the fly is not easy, but it is becoming more and more of a requirement. Fortunately, some designers and developers around the web know this and have put together a bunch of text generators to help you present your vision.
+
+</p>
+	
+	<progress value = "50" max = "100"></progress>
+	<br><br>
   Email Address:
   <input type="email" name="emailaddress">
   <br><br>
@@ -31,20 +70,6 @@
   <input type="reset" value="Clear All">
 </form>
 <br>
-	<br>
-	<h3>Mobile Emulators ScreenShots</h3>
-	<br>
-	<h4>Opera Emulator</h4>
-	<br>
-	<img src="Screen Shot 2018-02-26 at 9.41.44 PM.png" alt="Opera Emulator Screenshot" width="237" height="502">
-	<br>
-	<br>
-	<br>
-	<h4>Android SDK Emulators</h4>
-	<br>
-	<img src="Screen Shot 2018-02-25 at 1.57.15 PM.png" alt="Android SDK Mobile Emulator" width="237" height="502">
-	<br>
-	<br>
 	<br>
 	<h3>QR Code of the Phone Gap App</h3>
 	<br>
