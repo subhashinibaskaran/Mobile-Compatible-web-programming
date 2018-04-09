@@ -6,6 +6,16 @@
 			
 			<script src = "prefixfree.js"></script>
 		
+			<script src="hammer.js"></script>
+		
+			<script type="text/javascript" src="Provinces1.json"></script>
+		
+		
+		
+			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJzfzTn4mR6NBDfzagRziNaoldKkPVATs">
+				
+		    </script>
+		
 			<script>
 				var progressvalue = 0; 
 				function move() {
@@ -17,7 +27,7 @@
 					progressvalue= progressvalue + 20;
 					x.innerHTML  = progressvalue + "%";
 				}
-				}
+			}
 				
 			</script>
 			<script>
@@ -25,13 +35,142 @@
 					if (Modernizr.progressbar) {
 					document.getElementById("progress").value = 0;
 					}else{
-						var x = document.getElementById("progresstext");
+					var x = document.getElementById("progresstext");
 					progressvalue= 0;
 					x.innerHTML  = progressvalue + "%";
 					} 
 				}
 		
 			</script>
+			
+			<script>
+				var y = document.getElementById("mesg");
+				var z = document.getElementById("myLocation");
+				function showmap() {
+					if (Modernizr.geolocation) {
+						alert ("here");
+					  	navigator.geolocation.getCurrentPosition(showPosition, showError);
+						//z.style.display = "none";
+						
+					} else {
+					  error('not supported');
+						z.style.display = "block";
+					}
+				}
+				
+				function showPosition(position) {
+
+				  var mapcanvas = document.createElement('div');
+				  mapcanvas.id = 'mapcanvas';
+				  mapcanvas.style.height = '300px';
+				  mapcanvas.style.width = '400px';
+
+				  document.querySelector('article').appendChild(mapcanvas);
+
+				  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				  var myOptions = {
+					zoom: 15,
+					center: latlng,
+					mapTypeControl: false,
+					navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				  };
+				  var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
+					//var map = "https://maps.googleapis.com/maps/api/staticmap?center="
+    					//+latlng+"&zoom=14&size=400x300&key=AIzaSyDJzfzTn4mR6NBDfzagRziNaoldKkPVATs";
+
+				  var marker = new google.maps.Marker({
+					  position: latlng,
+					  map: map,
+					  title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
+				  });
+					//document.getElementById("mapcanvas").innerHTML = "<img src='"+map+"'>";
+					findprovince(latlng);
+    			
+				}
+				
+				function showError(){
+					alert("Error loading maps");
+				}
+				
+				
+				function findprovince(latlng) { 
+					var	geocoder = new google.maps.Geocoder();
+					var province;
+					var city;
+					geocoder.geocode({'latLng': latlng}, function(results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							
+							for (var ac = 0; ac < results[0].address_components.length; ac++) {
+                                    var component = results[0].address_components[ac];
+
+                                    switch(component.types[0]) {
+                                        case 'locality':
+                                            city = component.long_name;
+                                            break;
+                                        case 'administrative_area_level_1':
+                                            province = component.short_name;
+                                            break;
+                                        
+                                    }
+                                };
+						}
+				
+						document.getElementById("provincedisp").innerHTML = "Province: " + province;
+					
+					}
+					)
+					
+			 }
+				
+				function extractProvinceDetail(){
+					//var provinceJSON = Provinces1.json
+					//var jsonData = JSON.parse(Provinces1);
+					alert("extracting")
+					//alert(jsonData[0].name)
+				}
+				
+				
+		
+			</script>
+		
+			<script>
+				
+				function vibrateMe(){
+				
+				/*var vibrate = navigator.vibrate || navigator.mozVibrate;
+
+					// vibrate for 1 second
+					vibrate(1000);
+
+					// vibrate for 1 second, then pause for half, then vibrate for another 1 second
+					vibrate([1000, 500, 2000]);*/
+					
+					navigator.vibrate(1000);
+				}
+		
+			</script>
+		
+			<script>
+				var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
+
+				function logBattery(battery) {
+					//alert(battery.level*100);
+					document.getElementById('batteryLevel').value=battery.level*100;
+
+					battery.addEventListener('chargingchange', function() {
+						batteryElement.value= battery.charging *100;
+					}, false);
+				}
+
+				if (navigator.getBattery) {
+					navigator.getBattery().then(logBattery);
+				} else if (battery) {
+					logBattery(battery);
+			}
+		
+		</script>
+		
 			<style>
 
 				p{hyphens: auto;}
@@ -49,13 +188,26 @@
 				}
 		
 			</style>
+		
+		<style>
+		
+			#pinchElement {
+				background: silver;
+				height: 300px;
+				text-align: center;
+				font: 30px/300px Helvetica, Arial, sans-serif;
+			}
+		
+		</style>
 	
 		<title>index.html</title>
 	</head>
 
 	<body>
 		<h3> Mobile Compatible Web Programming </h3>
-		<h3> Assignment 2</h3>
+		<h3> Assignment 3</h3>
+		
+		Battery Level: <progress id="batteryLevel" max="100" value="0" ></progress>
 	
 		<p>This is the form created for Assignment 2 of Mobile Compatible Web Programming. This is to test the hyphenation using prefix free. Prefix-free is used to give css supports to various browsers and to make coding Clutter free. I am checking if Hyphenation works in this case with the prefix free and it works fine 
 		
@@ -92,7 +244,47 @@
 			<br><br>
 			<input type="checkbox" name="fictious" value="fictious"> The Data entered are Fictious<br><br>
 			<input type="reset" value="Clear All" onclick = "clearprogress()">
+			<br><br>
 		</form>
+		
+		
+		<a href="tel:+16479798990">Call us free!</a>
+		
+		<a href="sms:+16479798990?body=Hello%20there!">
+			Compose SMS!
+		</a>
+		
+		<div id="pinchElement"></div>
+		
+		<input type="button" value="Vibrate" onclick = "vibrateMe()">
+		
+			<input type="button" value="See My Location" onclick = "showmap()">
+		
+				<article>
+					
+				</article>
+		
+              
+       
+		<div id = "provincedisp"></div>
+				<br><br>
+
+				<div id = "errorMessage"><p id = "mesg"></p></div>
+				<div id = "myLocation"><select onChange="extractProvinceDetail()">
+					<option value="AB">Alberta</option>
+					<option value="BC">British Columbia</option>
+					<option value="MB">Manitoba</option>
+					<option value="NB">New Brunswick</option>
+					<option value="NL">Newfoundland and Labrador</option>
+					<option value="NS">Nova Scotia</option>
+					<option value="ON">Ontario</option>
+					<option value="PE">Prince Edward Island</option>
+					<option value="QC">Quebec</option>
+					<option value="SK">Saskatchewan</option>
+					<option value="NT">Northwest Territories</option>
+					<option value="NU">Nunavut</option>
+					<option value="YT">Yukon</option>
+					</select></div>
 		<br>
 		
 	</body>
