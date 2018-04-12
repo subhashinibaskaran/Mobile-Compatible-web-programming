@@ -7,169 +7,42 @@
 			<script src = "prefixfree.js"></script>
 		
 			<script src="hammer.js"></script>
-		
-			<script type="text/javascript" src="Provinces1.json"></script>
-		
-		
-		
-			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJzfzTn4mR6NBDfzagRziNaoldKkPVATs">
-				
-		    </script>
-		
+	
+			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJzfzTn4mR6NBDfzagRziNaoldKkPVATs">				
+		    </script>		
 			<script>
-				var progressvalue = 0; 
-				function move() {
-					if (Modernizr.progressbar) {
-						
-						document.getElementById("progress").value = document.getElementById("progress").value + 20; 
-					}else{
-					var x = document.getElementById("progresstext");
-					progressvalue= progressvalue + 20;
-					x.innerHTML  = progressvalue + "%";
-				}
-			}
-				
+				var progressvalue=0;function move(){if(Modernizr.progressbar)document.getElementById("progress").value=document.getElementById("progress").value+20;else{var a=document.getElementById("progresstext");progressvalue+=20;a.innerHTML=progressvalue+"%"}};			
 			</script>
 			<script>
-				function clearprogress() {
-					if (Modernizr.progressbar) {
-					document.getElementById("progress").value = 0;
-					}else{
-					var x = document.getElementById("progresstext");
-					progressvalue= 0;
-					x.innerHTML  = progressvalue + "%";
-					} 
-				}
-		
-			</script>
-			
+				function clearprogress(){if(Modernizr.progressbar)document.getElementById("progress").value=0;else{var a=document.getElementById("progresstext");progressvalue=0;a.innerHTML=progressvalue+"%"}};
+			</script>			
 			<script>
-				var y = document.getElementById("mesg");
-				var z = document.getElementById("myLocation");
-				function showmap() {
-					if (Modernizr.geolocation) {
-						alert ("here");
-					  	navigator.geolocation.getCurrentPosition(showPosition, showError);
-						//z.style.display = "none";
-						
-					} else {
-					  error('not supported');
-						z.style.display = "block";
-					}
-				}
-				
-				function showPosition(position) {
-
-				  var mapcanvas = document.createElement('div');
-				  mapcanvas.id = 'mapcanvas';
-				  mapcanvas.style.height = '300px';
-				  mapcanvas.style.width = '400px';
-
-				  document.querySelector('article').appendChild(mapcanvas);
-
-				  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-				  var myOptions = {
-					zoom: 15,
-					center: latlng,
-					mapTypeControl: false,
-					navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				  };
-				  var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
-					//var map = "https://maps.googleapis.com/maps/api/staticmap?center="
-    					//+latlng+"&zoom=14&size=400x300&key=AIzaSyDJzfzTn4mR6NBDfzagRziNaoldKkPVATs";
-
-				  var marker = new google.maps.Marker({
-					  position: latlng,
-					  map: map,
-					  title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
-				  });
-					//document.getElementById("mapcanvas").innerHTML = "<img src='"+map+"'>";
-					findprovince(latlng);
-    			
-				}
-				
-				function showError(){
-					alert("Error loading maps");
-				}
-				
-				
-				function findprovince(latlng) { 
-					var	geocoder = new google.maps.Geocoder();
-					var province;
-					var city;
-					geocoder.geocode({'latLng': latlng}, function(results, status) {
-						if (status == google.maps.GeocoderStatus.OK) {
-							
-							for (var ac = 0; ac < results[0].address_components.length; ac++) {
-                                    var component = results[0].address_components[ac];
-
-                                    switch(component.types[0]) {
-                                        case 'locality':
-                                            city = component.long_name;
-                                            break;
-                                        case 'administrative_area_level_1':
-                                            province = component.short_name;
-                                            break;
-                                        
-                                    }
-                                };
-						}
-				
-						document.getElementById("provincedisp").innerHTML = "Province: " + province;
-					
-					}
-					)
-					
-			 }
-				
-				function extractProvinceDetail(){
-					//var provinceJSON = Provinces1.json
-					//var jsonData = JSON.parse(Provinces1);
-					alert("extracting")
-					//alert(jsonData[0].name)
-				}
-				
-				
-		
+				var progressvalue=0,y=document.getElementById("mesg"),z=document.getElementById("myLocation"),provinceData=[{Name:"Alberta",ShortName:"AB",Premier:"Rachel Notley",ProvincialTax:"5",TopAttraction1:"Banff National Park",TopAttraction2:"Lake Louise",TopAttraction1URL:"http://www.pc.gc.ca/en/pn-np/ab/banff/index",TopAttraction2URL:"https://www.skilouise.com"},{Name:"British Colombia",ShortName:"BC",Premier:"John Horgan",ProvincialTax:"12",TopAttraction1:"Whistler",TopAttraction2:"Yoho National Park",
+				TopAttraction1URL:"https://www.whistlerblackcomb.com",TopAttraction2URL:"http://www.pc.gc.ca/en/pn-np/bc/yoho/index.aspx"},{Name:"Manitoba",ShortName:"MB",Premier:"Brian Pallister",ProvincialTax:"13",TopAttraction1:"The Forks",TopAttraction2:"Grand Beach",TopAttraction1URL:"http://www.theforks.com",TopAttraction2URL:"http://www.grandbeachtourism.com"},{Name:"New Brunswick",ShortName:"NB",Premier:"Brian Gallant",ProvincialTax:"15",TopAttraction1:"Hopewell Rocks",TopAttraction2:"Reversing Falls",TopAttraction1URL:"http://www.thehopewellrocks.ca",
+				TopAttraction2URL:"https://www.tourismnewbrunswick.ca/Products/R/Reversing-Rapids.aspx"},{Name:"Newfoundland and Labrador",ShortName:"NL",Premier:"Dwight Ball",ProvincialTax:"15",TopAttraction1:"Niagara Falls",TopAttraction2:"CN Tower",TopAttraction1URL:"https://www.niagarafalls.ca",TopAttraction2URL:"http://www.cntower.ca/intro.html"},{Name:"Northwest Territories",ShortName:"NT",Premier:"Bob McLeod",ProvincialTax:"5",TopAttraction1:"Nahanni National Park Reserve",TopAttraction2:"Wood Buffalo National Park",
+				TopAttraction1URL:"http://www.pc.gc.ca/en/pn-np/nt/nahanni",TopAttraction2URL:"http://www.pc.gc.ca/en/pn-np/nt/woodbuffalo/index"},{Name:"Nova Scotia",ShortName:"NS",Premier:"Stephen McNeil",ProvincialTax:"15",TopAttraction1:"The Cabot Trail",TopAttraction2:"Halifax Waterfront",TopAttraction1URL:"http://www.cabottrail.travel",TopAttraction2URL:"https://my-waterfront.ca/waterfront/halifax/"},{Name:"Nunavut",ShortName:"NU",Premier:"Paul Quassa",ProvincialTax:"5",TopAttraction1:"Baffin Island",TopAttraction2:"Auyuittuq National Park",
+				TopAttraction1URL:"http://www.baffinisland.ca",TopAttraction2URL:"http://www.pc.gc.ca/en/pn-np/nu/auyuittuq/index.aspx"},{Name:"Ontario",ShortName:"ON",Premier:"Kathleen Wynne",ProvincialTax:"13",TopAttraction1:"Niagara Falls",TopAttraction2:"CN Tower",TopAttraction1URL:"https://niagarafalls.ca",TopAttraction2URL:"http://www.cntower.ca/intro.html"},{Name:"Prince Edward Island",ShortName:"PE",Premier:"Wade MacLauchlan",ProvincialTax:"15",TopAttraction1:"PEI National Park",TopAttraction2:"Charlottetown",
+				TopAttraction1URL:"http://pc.gc.ca/en/pn-np/pe/pei-ipe/index",TopAttraction2URL:"https://www.charlottetown.ca"},{Name:"Quebec",ShortName:"QC",Premier:"Philippe Couillard",ProvincialTax:"14.975",TopAttraction1:"Place Royale",TopAttraction2:"Old Montr\u00e9al",TopAttraction1URL:"https://www.quebecregion.com/en/quebec-city-and-area/old-port-place-royale/",TopAttraction2URL:"http://www.vieux.montreal.qc.ca/eng/accueila.htm"},{Name:"Saskatchewan",ShortName:"SK",Premier:"Scott Moe",ProvincialTax:"11",TopAttraction1:"Fort Walsh National Historic Site",
+				TopAttraction2:"Saskatoon",TopAttraction1URL:"http://www.visitcypresshills.ca/attractions/fort-walsh-national-historic-site/",TopAttraction2URL:"https://www.saskatoon.ca"},{Name:"Yukon",ShortName:"YT",Premier:"Sandy Silver",ProvincialTax:"5",TopAttraction1:"Tombstone Territorial Park",TopAttraction2:"Yukon Wildlife Preserve",TopAttraction1URL:"http://www.env.gov.yk.ca/camping-parks/tombstonepark.php",TopAttraction2URL:"http://www.yukonwildlife.ca"}];
+				function showmap(){Modernizr.geolocation?navigator.geolocation.getCurrentPosition(showPosition,showError):(error("not supported"),document.getElementById("myLocation").style.display="block")}
+				function showPosition(b){var a=document.createElement("div");a.id="mapcanvas";a.style.height="300px";a.style.width="400px";document.querySelector("article").appendChild(a);a=new google.maps.LatLng(b.coords.latitude,b.coords.longitude);var c={zoom:15,center:a,mapTypeControl:!1,navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL},mapTypeId:google.maps.MapTypeId.ROADMAP};c=new google.maps.Map(document.getElementById("mapcanvas"),c);new google.maps.Marker({position:a,map:c,title:"You are here! (at least within a "+
+				b.coords.accuracy+" meter radius)"});findprovince(a)}
+				function showError(b){switch(b.code){case b.PERMISSION_DENIED:document.getElementById("mesg").innerHTML="You denied the request for Geolocation.";break;case b.POSITION_UNAVAILABLE:document.getElementById("mesg").innerHTML="Location information is unavailable.";break;case b.TIMEOUT:document.getElementById("mesg").innerHTML="The request to get your location timed out.";break;case b.UNKNOWN_ERROR:document.getElementById("mesg").innerHTML="An unknown error occurred."}document.getElementById("myLocation").style.display="block"}
+				function findprovince(b){var a;(new google.maps.Geocoder).geocode({latLng:b},function(b,e){if(e==google.maps.GeocoderStatus.OK)for(var c=0;c<b[0].address_components.length;c++){var d=b[0].address_components[c];switch(d.types[0]){case "administrative_area_level_1":a=d.short_name}}extractProvinceDetail(a)})}function provinceSelected(){var b=document.getElementById("locationDropdown").options[document.getElementById("locationDropdown").selectedIndex].value;extractProvinceDetail(b)}
+				function extractProvinceDetail(b){for(var a=0;a<provinceData.length;a++)if(provinceData[a].ShortName==b){document.getElementById("provinceName").innerHTML=provinceData[a].Name;document.getElementById("premierName").innerHTML=provinceData[a].Premier;document.getElementById("provincialTax").innerHTML=provinceData[a].ProvincialTax+"%";document.getElementById("Attraction1").innerHTML="<a href = "+provinceData[a].TopAttraction1URL+">"+provinceData[a].TopAttraction1+"</a>";document.getElementById("Attraction2").innerHTML=
+				"<a href = "+provinceData[a].TopAttraction2URL+">"+provinceData[a].TopAttraction2+"</a>";break}document.getElementById("provinceTable").style.display="block"};			
 			</script>
 		
 			<script>
 				
-				function vibrateMe(){
-				
-				/*var vibrate = navigator.vibrate || navigator.mozVibrate;
-
-					// vibrate for 1 second
-					vibrate(1000);
-
-					// vibrate for 1 second, then pause for half, then vibrate for another 1 second
-					vibrate([1000, 500, 2000]);*/
-					
-					navigator.vibrate(1000);
-				}
+				function vibrateMe(){navigator.vibrate(1E3)};
 		
 			</script>
 		
 			<script>
-				var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
-
-				function logBattery(battery) {
-					//alert(battery.level*100);
-					document.getElementById('batteryLevel').value=battery.level*100;
-
-					battery.addEventListener('chargingchange', function() {
-						batteryElement.value= battery.charging *100;
-					}, false);
-				}
-
-				if (navigator.getBattery) {
-					navigator.getBattery().then(logBattery);
-				} else if (battery) {
-					logBattery(battery);
-			}
+				var battery=navigator.battery||navigator.webkitBattery||navigator.mozBattery;function logBattery(a){document.getElementById("batteryLevel").value=100*a.level;a.addEventListener("chargingchange",function(){batteryElement.value=100*a.charging},!1)}navigator.getBattery?navigator.getBattery().then(logBattery):battery&&logBattery(battery);
 		
-		</script>
+			</script>
 		
 			<style>
 
@@ -187,23 +60,15 @@
     				}
 				}
 		
-			</style>
+			</style>	
 		
-		<style>
-		
-			#pinchElement {
-				background: silver;
-				height: 300px;
-				text-align: center;
-				font: 30px/300px Helvetica, Arial, sans-serif;
-			}
-		
-		</style>
-	
 		<title>index.html</title>
 	</head>
 
 	<body>
+		
+		
+		
 		<h3> Mobile Compatible Web Programming </h3>
 		<h3> Assignment 3</h3>
 		
@@ -246,46 +111,88 @@
 			<input type="reset" value="Clear All" onclick = "clearprogress()">
 			<br><br>
 		</form>
-		
-		
-		<a href="tel:+16479798990">Call us free!</a>
-		
-		<a href="sms:+16479798990?body=Hello%20there!">
-			Compose SMS!
-		</a>
-		
-		<div id="pinchElement"></div>
-		
-		<input type="button" value="Vibrate" onclick = "vibrateMe()">
-		
-			<input type="button" value="See My Location" onclick = "showmap()">
-		
-				<article>
-					
-				</article>
-		
-              
-       
-		<div id = "provincedisp"></div>
-				<br><br>
 
-				<div id = "errorMessage"><p id = "mesg"></p></div>
-				<div id = "myLocation"><select onChange="extractProvinceDetail()">
-					<option value="AB">Alberta</option>
-					<option value="BC">British Columbia</option>
-					<option value="MB">Manitoba</option>
-					<option value="NB">New Brunswick</option>
-					<option value="NL">Newfoundland and Labrador</option>
-					<option value="NS">Nova Scotia</option>
-					<option value="ON">Ontario</option>
-					<option value="PE">Prince Edward Island</option>
-					<option value="QC">Quebec</option>
-					<option value="SK">Saskatchewan</option>
-					<option value="NT">Northwest Territories</option>
-					<option value="NU">Nunavut</option>
-					<option value="YT">Yukon</option>
-					</select></div>
-		<br>
+		<input type="button" value="Vibrate" onclick = "vibrateMe()">
+		<input type="button" value="See My Location" onclick = "showmap()">
+		<article>
+		</article>
+		<br><br>
+		<div id = "errorMessage"><p id = "mesg"></p></div>
+		<div id = "myLocation" style="display: none;">
+			Choose Your Location: 
+			<br>
+			<select id = "locationDropdown" onChange="provinceSelected()">
+				<option value="Select">-Select-</option>
+				<option value="AB">Alberta</option>
+				<option value="BC">British Columbia</option>
+				<option value="MB">Manitoba</option>
+				<option value="NB">New Brunswick</option>
+				<option value="NL">Newfoundland and Labrador</option>
+				<option value="NS">Nova Scotia</option>
+				<option value="ON">Ontario</option>
+				<option value="PE">Prince Edward Island</option>
+				<option value="QC">Quebec</option>
+				<option value="SK">Saskatchewan</option>
+				<option value="NT">Northwest Territories</option>
+				<option value="NU">Nunavut</option>
+				<option value="YT">Yukon</option>
+			</select>
+		</div>
+		<div id = "provinceTable" style="display: none;">
+			<br>
+			<table width="37%" style="width:50%" id="detailTable">
+				<tr>
+					<td width="30%">Province</td>
+					<td width="70%" id = "provinceName"></td>
+				</tr>
+				<tr>
+					<td>Premier</td>
+					<td id = "premierName"></td>
+				</tr>
+				<tr>
+					<td>Provincial Tax</td>
+					<td id = "provincialTax"></td>
+				</tr>
+				<tr>
+					<td rowspan="2">Attractions</td>
+					<td id = "Attraction1"></td>
+				</tr>
+				<tr>
+					<td id = "Attraction2"></td>
+				</tr>
+			</table>
+		</div>
 		
+				
+		  <div>
+			  
+			  <p> This is a Panoramic Picture. Please Pinch to Zoom and Pan to see the whole zoomed Panorama Image</p>
+			<div class="pinch-zoom-container">
+			  <img id="pinch-zoom-image-id" class="pinch-zoom-image" onload="onLoad()"
+				   src="Vancouver_dusk_pano.jpg" alt = "Vancover Dusk Panorama Image">
+			</div>
+
+			<style>
+			  .pinch-zoom-container {
+				overflow: hidden;
+				height: 300px;
+			  }
+			  .pinch-zoom-image {
+				width: 100%;
+			  }
+			</style>
+
+			<script src="hammer.js"></script>
+
+			<script>
+				var MIN_SCALE=1,MAX_SCALE=64,imgWidth=null,imgHeight=null,viewportWidth=null,viewportHeight=null,scale=null,lastScale=null,container=null,img=null,x=0,lastX=0,y=0,lastY=0,pinchCenter=null,disableImgEventHandlers=function(){"onclick onmousedown onmousemove onmouseout onmouseover onmouseup ondblclick onfocus onblur".split(" ").forEach(function(a){img[a]=function(){return!1}})},absolutePosition=function(a){for(var b=0,c=0;null!==a;)b+=a.offsetLeft,c+=a.offsetTop,a=a.offsetParent;return{x:b,y:c}},restrictScale=
+				function(a){a<MIN_SCALE?a=MIN_SCALE:a>MAX_SCALE&&(a=MAX_SCALE);return a},restrictRawPos=function(a,b,c){a<b/scale-c?a=b/scale-c:0<a&&(a=0);return a},updateLastPos=function(a,b){lastX=x;lastY=y},translate=function(a,b){var c=restrictRawPos(lastX+a/scale,Math.min(viewportWidth,curWidth),imgWidth);x=c;img.style.marginLeft=Math.ceil(c*scale)+"px";y=c=restrictRawPos(lastY+b/scale,Math.min(viewportHeight,curHeight),imgHeight);img.style.marginTop=Math.ceil(c*scale)+"px"},zoom=function(a){scale=restrictScale(lastScale*
+				a);curWidth=imgWidth*scale;curHeight=imgHeight*scale;img.style.width=Math.ceil(curWidth)+"px";img.style.height=Math.ceil(curHeight)+"px";translate(0,0)},rawCenter=function(a){var b=absolutePosition(container);return{x:-x+(a.center.x-b.x+(window.pageXOffset?window.pageXOffset:document.body.scrollLeft))/scale,y:-y+(a.center.y-b.y+(window.pageYOffset?window.pageYOffset:document.body.scrollTop))/scale}},updateLastScale=function(){lastScale=scale},zoomAround=function(a,b,c,d){zoom(a);translate((-x+Math.min(viewportWidth,
+				curWidth)/2/scale-b)*scale,(-y+Math.min(viewportHeight,curHeight)/2/scale-c)*scale);d||(updateLastScale(),updateLastPos())},zoomCenter=function(a){zoomAround(a,-x+Math.min(viewportWidth,curWidth)/2/scale,-y+Math.min(viewportHeight,curHeight)/2/scale)},zoomIn=function(){zoomCenter(2)},zoomOut=function(){zoomCenter(.5)},onLoad=function(){img=document.getElementById("pinch-zoom-image-id");container=img.parentElement;disableImgEventHandlers();imgWidth=img.width;imgHeight=img.height;viewportWidth=img.offsetWidth;
+				lastScale=scale=viewportWidth/imgWidth;viewportHeight=img.parentElement.offsetHeight;curWidth=imgWidth*scale;curHeight=imgHeight*scale;var a=new Hammer(container,{domEvents:!0});a.get("pinch").set({enable:!0});a.on("pan",function(a){translate(a.deltaX,a.deltaY)});a.on("panend",function(a){updateLastPos()});a.on("pinch",function(a){null===pinchCenter&&(pinchCenter=rawCenter(a),pinchCenterOffset={x:pinchCenter.x*scale-(-x*scale+Math.min(viewportWidth,curWidth)/2),y:pinchCenter.y*scale-(-y*scale+Math.min(viewportHeight,
+				curHeight)/2)});var b=restrictScale(scale*a.scale);zoomAround(a.scale,(pinchCenter.x*b-pinchCenterOffset.x)/b,(pinchCenter.y*b-pinchCenterOffset.y)/b,!0)});a.on("pinchend",function(a){updateLastScale();updateLastPos();pinchCenter=null});a.on("doubletap",function(a){a=rawCenter(a);zoomAround(2,a.x,a.y)})};
+				©2009 Google - Terms of Service - Privacy Policy - Google Home
+			</script>
+  		</div>
 	</body>
 </html>

@@ -1,0 +1,597 @@
+<!doctype html>
+<html class="no-js">
+	<head>
+		<meta charset="UTF-8">
+			<script src = "modernizr-custom.js"></script>
+			
+			<script src = "prefixfree.js"></script>
+		
+			<script src="hammer.js"></script>
+	
+			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJzfzTn4mR6NBDfzagRziNaoldKkPVATs">				
+		    </script>		
+			<script>
+				var progressvalue = 0; 
+				function move() {
+					if (Modernizr.progressbar) {
+						document.getElementById("progress").value = document.getElementById("progress").value + 20; 
+					}else{
+						var x = document.getElementById("progresstext");
+						progressvalue= progressvalue + 20;
+						x.innerHTML  = progressvalue + "%";
+					}
+				}			
+			</script>
+			<script>
+				function clearprogress() {
+					if (Modernizr.progressbar) {
+						document.getElementById("progress").value = 0;
+					}else{
+						var x = document.getElementById("progresstext");
+						progressvalue= 0;
+						x.innerHTML  = progressvalue + "%";
+					} 
+				}
+			</script>			
+			<script>
+				var y = document.getElementById("mesg");
+				var z = document.getElementById("myLocation");
+				var provinceData = [
+					{   
+						Name: "Alberta",
+						ShortName: "AB",
+						Premier: "Rachel Notley",
+						ProvincialTax: "5",
+						TopAttraction1: "Banff National Park",
+						TopAttraction2: "Lake Louise",
+						TopAttraction1URL: "http://www.pc.gc.ca/en/pn-np/ab/banff/index",
+						TopAttraction2URL: "https://www.skilouise.com",
+					},
+					{ 
+						Name: "British Colombia",
+						ShortName: "BC",
+						Premier: "John Horgan",
+						ProvincialTax: "12",
+						TopAttraction1: "Whistler",
+						TopAttraction2: "Yoho National Park",
+						TopAttraction1URL: "https://www.whistlerblackcomb.com",
+						TopAttraction2URL: "http://www.pc.gc.ca/en/pn-np/bc/yoho/index.aspx",
+					},
+					{  
+						Name: "Manitoba",
+						ShortName: "MB",
+						Premier: "Brian Pallister",
+						ProvincialTax: "13",
+						TopAttraction1: "The Forks",
+						TopAttraction2: "Grand Beach",
+						TopAttraction1URL: "http://www.theforks.com",
+						TopAttraction2URL: "http://www.grandbeachtourism.com",
+					},
+					{
+						Name: "New Brunswick",
+						ShortName: "NB",
+						Premier: "Brian Gallant",
+						ProvincialTax: "15",
+						TopAttraction1: "Hopewell Rocks",
+						TopAttraction2: "Reversing Falls",
+						TopAttraction1URL: "http://www.thehopewellrocks.ca",
+						TopAttraction2URL: "https://www.tourismnewbrunswick.ca/Products/R/Reversing-Rapids.aspx",
+					},
+					{  
+						Name: "Newfoundland and Labrador",
+						ShortName: "NL",
+						Premier: "Dwight Ball",
+						ProvincialTax: "15",
+						TopAttraction1: "Niagara Falls",
+						TopAttraction2: "CN Tower",
+						TopAttraction1URL: "https://www.niagarafalls.ca",
+						TopAttraction2URL: "http://www.cntower.ca/intro.html",
+					},
+					{
+						Name: "Northwest Territories",
+						ShortName: "NT",
+						Premier: "Bob McLeod",
+						ProvincialTax: "5",
+						TopAttraction1: "Nahanni National Park Reserve",
+						TopAttraction2: "Wood Buffalo National Park",
+						TopAttraction1URL: "http://www.pc.gc.ca/en/pn-np/nt/nahanni",
+						TopAttraction2URL: "http://www.pc.gc.ca/en/pn-np/nt/woodbuffalo/index",
+					},
+					{
+						Name: "Nova Scotia",
+						ShortName: "NS",
+						Premier: "Stephen McNeil",
+						ProvincialTax: "15",
+						TopAttraction1: "The Cabot Trail",
+						TopAttraction2: "Halifax Waterfront",
+						TopAttraction1URL: "http://www.cabottrail.travel",
+						TopAttraction2URL: "https://my-waterfront.ca/waterfront/halifax/",
+					},
+					{
+						Name: "Nunavut",
+						ShortName: "NU",
+						Premier: "Paul Quassa",
+						ProvincialTax: "5",
+						TopAttraction1: "Baffin Island",
+						TopAttraction2: "Auyuittuq National Park",
+						TopAttraction1URL: "http://www.baffinisland.ca",
+						TopAttraction2URL: "http://www.pc.gc.ca/en/pn-np/nu/auyuittuq/index.aspx",
+					},
+					{
+						Name: "Ontario",
+						ShortName: "ON",
+						Premier: "Kathleen Wynne",
+						ProvincialTax: "13",
+						TopAttraction1: "Niagara Falls",
+						TopAttraction2: "CN Tower",
+						TopAttraction1URL: "https://niagarafalls.ca",
+						TopAttraction2URL: "http://www.cntower.ca/intro.html",
+					},
+					{
+						Name: "Prince Edward Island",
+						ShortName: "PE",
+						Premier: "Wade MacLauchlan",
+						ProvincialTax: "15",
+						TopAttraction1: "PEI National Park",
+						TopAttraction2: "Charlottetown",
+						TopAttraction1URL: "http://pc.gc.ca/en/pn-np/pe/pei-ipe/index",
+						TopAttraction2URL: "https://www.charlottetown.ca",
+					},
+					{
+						Name: "Quebec",
+						ShortName: "QC",
+						Premier: "Philippe Couillard",
+						ProvincialTax: "14.975",
+						TopAttraction1: "Place Royale",
+						TopAttraction2: "Old Montréal",
+						TopAttraction1URL: "https://www.quebecregion.com/en/quebec-city-and-area/old-port-place-royale/",
+						"TopAttraction2URL": "http://www.vieux.montreal.qc.ca/eng/accueila.htm",
+					},
+					{
+						Name: "Saskatchewan",
+						ShortName: "SK",
+						Premier: "Scott Moe",
+						ProvincialTax: "11",
+						TopAttraction1: "Fort Walsh National Historic Site",
+						TopAttraction2: "Saskatoon",
+						TopAttraction1URL: "http://www.visitcypresshills.ca/attractions/fort-walsh-national-historic-site/",
+						TopAttraction2URL: "https://www.saskatoon.ca",
+					},
+					{
+						Name: "Yukon",
+						ShortName: "YT",
+						Premier: "Sandy Silver",
+						ProvincialTax: "5",
+						TopAttraction1: "Tombstone Territorial Park",
+						TopAttraction2: "Yukon Wildlife Preserve",
+						TopAttraction1URL: "http://www.env.gov.yk.ca/camping-parks/tombstonepark.php",
+						TopAttraction2URL: "http://www.yukonwildlife.ca",
+					}
+				]  
+				function showmap() {
+					if (Modernizr.geolocation) {
+					  	navigator.geolocation.getCurrentPosition(showPosition, showError);
+						
+					} else {
+					  error('not supported');
+						document.getElementById("myLocation").style.display ="block"
+					}
+				}			
+				function showPosition(position) {
+				  var mapcanvas = document.createElement('div');
+				  mapcanvas.id = 'mapcanvas';
+				  mapcanvas.style.height = '300px';
+				  mapcanvas.style.width = '400px';
+				  document.querySelector('article').appendChild(mapcanvas);
+				  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				  var myOptions = {
+					zoom: 15,
+					center: latlng,
+					mapTypeControl: false,
+					navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				  };
+				  var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
+
+				  var marker = new google.maps.Marker({
+					  position: latlng,
+					  map: map,
+					  title:"You are here! (at least within a "+position.coords.accuracy+" meter radius)"
+				  });
+					findprovince(latlng);
+				}
+				
+				function showError(error){
+					alert("error")
+					switch(error.code) {	
+        				case error.PERMISSION_DENIED:
+							document.getElementById("mesg").innerHTML = "You denied the request for Geolocation."
+							break;
+						case error.POSITION_UNAVAILABLE:
+							document.getElementById("mesg").innerHTML = "Location information is unavailable."
+							break;
+						case error.TIMEOUT:
+							document.getElementById("mesg").innerHTML = "The request to get your location timed out."
+							break;
+						case error.UNKNOWN_ERROR:
+							document.getElementById("mesg").innerHTML = "An unknown error occurred."
+							break;
+					}
+					document.getElementById("myLocation").style.display = "block"
+				}
+				
+				function findprovince(latlng) { 
+					var	geocoder = new google.maps.Geocoder();
+					var province;
+					var city;
+					geocoder.geocode({'latLng': latlng}, function(results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							
+							for (var ac = 0; ac < results[0].address_components.length; ac++) {
+                                    var component = results[0].address_components[ac];
+
+                                    switch(component.types[0]) {
+                                        case 'locality':
+                                            city = component.long_name;
+                                            break;
+                                        case 'administrative_area_level_1':
+                                            province = component.short_name;
+                                            break;
+                                        
+                                    }
+                                };
+							}
+						    extractProvinceDetail(province);	
+						}
+					)
+					
+			 	}
+				function provinceSelected(){
+					var province1 = document.getElementById("locationDropdown").options[document.getElementById("locationDropdown").selectedIndex].value
+					extractProvinceDetail(province1)
+				}
+				
+				function extractProvinceDetail(provinceName){
+					
+					for(var i=0; i<provinceData.length; i++) {
+						if ((provinceData[i]["ShortName"] ) == provinceName) {
+							document.getElementById("provinceName").innerHTML =  provinceData[i]["Name"];
+							document.getElementById("premierName").innerHTML =  provinceData[i]["Premier"];
+							document.getElementById("provincialTax").innerHTML = provinceData[i]["ProvincialTax"]+"%";
+							document.getElementById("Attraction1").innerHTML =  "<a href = " + provinceData[i]["TopAttraction1URL"]+">"+provinceData[i]["TopAttraction1"]+"</a>";
+							document.getElementById("Attraction2").innerHTML =  "<a href = " + provinceData[i]["TopAttraction2URL"]+">"+provinceData[i]["TopAttraction2"]+"</a>";
+							break;
+						}
+					}
+					
+					document.getElementById("provinceTable").style.display = "block"
+				}
+			</script>
+		
+			<script>
+				
+				function vibrateMe(){
+					
+					navigator.vibrate(1000);
+				}
+		
+			</script>
+		
+			<script>
+				var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery;
+
+				function logBattery(battery) {
+					//alert(battery.level*100);
+					document.getElementById('batteryLevel').value=battery.level*100;
+
+					battery.addEventListener('chargingchange', function() {
+						batteryElement.value= battery.charging *100;
+					}, false);
+				}
+
+				if (navigator.getBattery) {
+					navigator.getBattery().then(logBattery);
+				} else if (battery) {
+					logBattery(battery);
+			}
+		
+		</script>
+		
+			<style>
+
+				p{hyphens: auto;}
+
+				@media only screen and (orientation: portrait){
+					body {
+    					background-color: white;
+					}
+				}
+
+				@media only screen and (orientation: landscape) {
+    				body {
+        				background-color: lightgrey;
+    				}
+				}
+		
+			</style>	
+		
+		<title>index.html</title>
+	</head>
+
+	<body>
+		
+		
+		
+		<h3> Mobile Compatible Web Programming </h3>
+		<h3> Assignment 3</h3>
+		
+		Battery Level: <progress id="batteryLevel" max="100" value="0" ></progress>
+	
+		<p>This is the form created for Assignment 2 of Mobile Compatible Web Programming. This is to test the hyphenation using prefix free. Prefix-free is used to give css supports to various browsers and to make coding Clutter free. I am checking if Hyphenation works in this case with the prefix free and it works fine 
+		
+		This Assignment also uses Modernizr to detect HTML5 features and provide gracious fallbacks. The custom Modernizr Java script file was downloaded from the url for Progress bar and Geolocation API which will be used for Assignmnet 3.
+			
+		The next part of the assignment changes the backgroud color of the app according to the orientation of the mobile device using css media queries.
+		</p>
+		
+	
+		<form action="formAction" method="post" id = "assignForm" class = "assignForm">
+			
+			
+			<progress max="100" value="0" id="progress"></progress>
+			<br><br>
+			<div id="progresstext"></div>
+			
+			<br><br>
+			Email Address:
+			<input type="email" name="emailaddress" onchange="move()">
+			<br><br>
+			Personal URL:
+			<input type="url" name="personalurl" onchange="move()">
+			<br><br>
+			Year Of Birth:
+			<input type="month" name="yearofbirth" onchange="move()">
+			<br><br>
+			Gender:<br>
+			<input type="radio" name="gender" value="male" onchange="move()"> Male<br>
+			<input type="radio" name="gender" value="female" onchange="move()"> Female<br>
+			<input type="radio" name="gender" value="other" onchange="move()"> Other
+			<br><br>
+			Comments:
+			<textarea name="comment" onchange="move()"></textarea>
+			<br><br>
+			<input type="checkbox" name="fictious" value="fictious"> The Data entered are Fictious<br><br>
+			<input type="reset" value="Clear All" onclick = "clearprogress()">
+			<br><br>
+		</form>
+
+		<input type="button" value="Vibrate" onclick = "vibrateMe()">
+		<input type="button" value="See My Location" onclick = "showmap()">
+		<article>
+		</article>
+		<br><br>
+		<div id = "errorMessage"><p id = "mesg"></p></div>
+		<div id = "myLocation" style="display: none;">
+			Choose Your Location: 
+			<br>
+			<select id = "locationDropdown" onChange="provinceSelected()">
+				<option value="Select">-Select-</option>
+				<option value="AB">Alberta</option>
+				<option value="BC">British Columbia</option>
+				<option value="MB">Manitoba</option>
+				<option value="NB">New Brunswick</option>
+				<option value="NL">Newfoundland and Labrador</option>
+				<option value="NS">Nova Scotia</option>
+				<option value="ON">Ontario</option>
+				<option value="PE">Prince Edward Island</option>
+				<option value="QC">Quebec</option>
+				<option value="SK">Saskatchewan</option>
+				<option value="NT">Northwest Territories</option>
+				<option value="NU">Nunavut</option>
+				<option value="YT">Yukon</option>
+			</select>
+		</div>
+		<div id = "provinceTable" style="display: none;">
+			<br>
+			<table width="37%" style="width:50%" id="detailTable">
+				<tr>
+					<td width="30%">Province</td>
+					<td width="70%" id = "provinceName"></td>
+				</tr>
+				<tr>
+					<td>Premier</td>
+					<td id = "premierName"></td>
+				</tr>
+				<tr>
+					<td>Provincial Tax</td>
+					<td id = "provincialTax"></td>
+				</tr>
+				<tr>
+					<td rowspan="2">Attractions</td>
+					<td id = "Attraction1"></td>
+				</tr>
+				<tr>
+					<td id = "Attraction2"></td>
+				</tr>
+			</table>
+		</div>
+		
+				
+		  <div>
+			  
+			  <p> This is a Panoramic Picture. Please Pinch to Zoom and Pan to see the whole zoomed Panorama Image</p>
+			<div class="pinch-zoom-container">
+			  <img id="pinch-zoom-image-id" class="pinch-zoom-image" onload="onLoad()"
+				   src="Vancouver_dusk_pano.jpg" alt = "Vancover Dusk Panorama Image">
+			</div>
+
+			<style>
+			  .pinch-zoom-container {
+				overflow: hidden;
+				height: 300px;
+			  }
+			  .pinch-zoom-image {
+				width: 100%;
+			  }
+			</style>
+
+			<script src="hammer.js"></script>
+
+			<script>
+			  var MIN_SCALE = 1; 
+			  var MAX_SCALE = 64;
+			  var imgWidth = null;
+			  var imgHeight = null;
+			  var viewportWidth = null;
+			  var viewportHeight = null;
+			  var scale = null;
+			  var lastScale = null;
+			  var container = null;
+			  var img = null;
+			  var x = 0;
+			  var lastX = 0;
+			  var y = 0;
+			  var lastY = 0;
+			  var pinchCenter = null;
+			  var disableImgEventHandlers = function () {
+				var events = ['onclick', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover',
+							  'onmouseup', 'ondblclick', 'onfocus', 'onblur'];
+				events.forEach(function (event) {
+				  img[event] = function () {
+					return false;
+				  };
+				});
+			  };
+			  var absolutePosition = function (el) {
+				var x = 0,
+				  y = 0;
+				while (el !== null) {
+				  x += el.offsetLeft;
+				  y += el.offsetTop;
+				  el = el.offsetParent;
+				}
+				return { x: x, y: y };
+			  };
+			  var restrictScale = function (scale) {
+				if (scale < MIN_SCALE) {
+				  scale = MIN_SCALE;
+				} else if (scale > MAX_SCALE) {
+				  scale = MAX_SCALE;
+				}
+				return scale;
+			  };
+			  var restrictRawPos = function (pos, viewportDim, imgDim) {
+				if (pos < viewportDim/scale - imgDim) {
+				  pos = viewportDim/scale - imgDim;
+				} else if (pos > 0) {
+				  pos = 0;
+				}
+				return pos;
+			  };
+			  var updateLastPos = function (deltaX, deltaY) {
+				lastX = x;
+				lastY = y;
+			  };
+			  var translate = function (deltaX, deltaY) {
+				var newX = restrictRawPos(lastX + deltaX/scale,
+										  Math.min(viewportWidth, curWidth), imgWidth);
+				x = newX;
+				img.style.marginLeft = Math.ceil(newX*scale) + 'px';
+				var newY = restrictRawPos(lastY + deltaY/scale,
+										  Math.min(viewportHeight, curHeight), imgHeight);
+				y = newY;
+				img.style.marginTop = Math.ceil(newY*scale) + 'px';
+			  };
+			  var zoom = function (scaleBy) {
+				scale = restrictScale(lastScale*scaleBy);
+				curWidth = imgWidth*scale;
+				curHeight = imgHeight*scale;
+				img.style.width = Math.ceil(curWidth) + 'px';
+				img.style.height = Math.ceil(curHeight) + 'px';
+				translate(0, 0);
+			  };
+			  var rawCenter = function (e) {
+				var pos = absolutePosition(container);
+				var scrollLeft = window.pageXOffset ? window.pageXOffset : document.body.scrollLeft;
+				var scrollTop = window.pageYOffset ? window.pageYOffset : document.body.scrollTop;
+				var zoomX = -x + (e.center.x - pos.x + scrollLeft)/scale;
+				var zoomY = -y + (e.center.y - pos.y + scrollTop)/scale;
+				return { x: zoomX, y: zoomY };
+			  };
+			  var updateLastScale = function () {
+				lastScale = scale;
+			  };
+			  var zoomAround = function (scaleBy, rawZoomX, rawZoomY, doNotUpdateLast) {
+				zoom(scaleBy);
+				var rawCenterX = -x + Math.min(viewportWidth, curWidth)/2/scale;
+				var rawCenterY = -y + Math.min(viewportHeight, curHeight)/2/scale;
+				var deltaX = (rawCenterX - rawZoomX)*scale;
+				var deltaY = (rawCenterY - rawZoomY)*scale;
+				translate(deltaX, deltaY);
+				if (!doNotUpdateLast) {
+				  updateLastScale();
+				  updateLastPos();
+				}
+			  };
+			  var zoomCenter = function (scaleBy) {
+				var zoomX = -x + Math.min(viewportWidth, curWidth)/2/scale;
+				var zoomY = -y + Math.min(viewportHeight, curHeight)/2/scale;
+				zoomAround(scaleBy, zoomX, zoomY);
+			  };
+			  var zoomIn = function () {
+				zoomCenter(2);
+			  };
+			  var zoomOut = function () {
+				zoomCenter(1/2);
+			  };
+			  var onLoad = function () {
+				img = document.getElementById('pinch-zoom-image-id');
+				container = img.parentElement;
+				disableImgEventHandlers();
+				imgWidth = img.width;
+				imgHeight = img.height;
+				viewportWidth = img.offsetWidth;
+				scale = viewportWidth/imgWidth;
+				lastScale = scale;
+				viewportHeight = img.parentElement.offsetHeight;
+				curWidth = imgWidth*scale;
+				curHeight = imgHeight*scale;
+				var hammer = new Hammer(container, {
+				  domEvents: true
+				});
+				hammer.get('pinch').set({
+				  enable: true
+				});
+				hammer.on('pan', function (e) {
+				  translate(e.deltaX, e.deltaY);
+				});
+				hammer.on('panend', function (e) {
+				  updateLastPos();
+				});
+				hammer.on('pinch', function (e) {
+				  if (pinchCenter === null) {
+					pinchCenter = rawCenter(e);
+					var offsetX = pinchCenter.x*scale - (-x*scale + Math.min(viewportWidth, curWidth)/2);
+					var offsetY = pinchCenter.y*scale - (-y*scale + Math.min(viewportHeight, curHeight)/2);
+					pinchCenterOffset = { x: offsetX, y: offsetY };
+				  }
+				  var newScale = restrictScale(scale*e.scale);
+				  var zoomX = pinchCenter.x*newScale - pinchCenterOffset.x;
+				  var zoomY = pinchCenter.y*newScale - pinchCenterOffset.y;
+				  var zoomCenter = { x: zoomX/newScale, y: zoomY/newScale };
+				  zoomAround(e.scale, zoomCenter.x, zoomCenter.y, true);
+				});
+				hammer.on('pinchend', function (e) {
+				  updateLastScale();
+				  updateLastPos();
+				  pinchCenter = null;
+				});
+				hammer.on('doubletap', function (e) {
+				  var c = rawCenter(e);
+				  zoomAround(2, c.x, c.y);
+				});
+			  };
+			</script>
+  		</div>
+	</body>
+</html>
